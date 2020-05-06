@@ -21,11 +21,11 @@ def paginate_questions(request, selection):
 
 def create_app(test_config=None):
   # create and configure the app
-  app = Flask(__name__)
-  setup_db(app)
-  CORS(app)
+    app = Flask(__name__)
+    setup_db(app)
+    CORS(app)
 
-  @app.after_request
+    @app.after_request
     def after_request(response):
         response.headers.add('Access-Control-Allow-Headers',
                              'Content-Type,Authorization,true')
@@ -33,7 +33,7 @@ def create_app(test_config=None):
                              'GET,PUT,POST,DELETE,OPTIONS')
         return response
 
-  @app.route('/categories')
+    @app.route('/categories')
     def retrieve_categories():
         categories = Category.query.order_by(Category.type).all()
 
@@ -46,7 +46,7 @@ def create_app(test_config=None):
         })
 
 
-  @app.route('/questions')
+    @app.route('/questions')
     def retrieve_questions():
         selection = Question.query.order_by(Question.id).all()
         current_questions = paginate_questions(request, selection)
@@ -65,7 +65,7 @@ def create_app(test_config=None):
         })
 
   
-  @app.route("/questions/<question_id>", methods=['DELETE'])
+    @app.route("/questions/<question_id>", methods=['DELETE'])
     def delete_question(question_id):
         try:
             question = Question.query.get(question_id)
@@ -77,7 +77,7 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-  @app.route("/questions", methods=['POST'])
+    @app.route("/questions", methods=['POST'])
     def add_question():
         body = request.get_json()
 
@@ -103,7 +103,7 @@ def create_app(test_config=None):
             abort(422)
 
   
-  @app.route('/questions/search', methods=['POST'])
+    @app.route('/questions/search', methods=['POST'])
     def search_questions():
         body = request.get_json()
         search_term = body.get('searchTerm', None)
@@ -121,7 +121,7 @@ def create_app(test_config=None):
         abort(404)
 
  
-  @app.route('/categories/<int:category_id>/questions', methods=['GET'])
+    @app.route('/categories/<int:category_id>/questions', methods=['GET'])
     def retrieve_questions_by_category(category_id):
 
         try:
@@ -138,7 +138,7 @@ def create_app(test_config=None):
             abort(404)
 
   
-  @app.route('/quizzes', methods=['POST'])
+    @app.route('/quizzes', methods=['POST'])
     def play_quiz():
 
         try:
